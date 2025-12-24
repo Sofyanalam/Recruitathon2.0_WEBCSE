@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import "/Users/sofyanalam/mirascope-app/src/styling/App.css";
+import "../styling/App.css";
 
 
 function FileUpload({onDataParsed}){

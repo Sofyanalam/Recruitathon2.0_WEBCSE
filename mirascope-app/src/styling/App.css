@@ -74,7 +74,12 @@
 .summarize-btn:active {
   transform: scale(0.98);
 }
-
+.summary{
+  background:  rgb(255, 255, 255);
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 30px;
+}
 @media (max-width: 400px) {
   .app-title {
     font-size: 2.4rem;

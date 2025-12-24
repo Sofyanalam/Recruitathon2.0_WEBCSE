@@ -1,23 +1,34 @@
-import { useState } from 'react'
-import FileUpload from "/Users/sofyanalam/mirascope-app/src/components/FileUpload";
-import "/Users/sofyanalam/mirascope-app/src/styling/App.css";
+import { useState } from 'react';
+import FileUpload from "./components/FileUpload";
+import { SentimentAnalysis } from './components/SentimentAnalysis';
+import { getInsights } from './components/GetInsights';
+import "./styling/App.css";
+// import Summary from './components/Summary';
 
 function App() {
 
-  const [bool,setBool] = useState(false);
+  const [sentiment,setSentiment] = useState(null);
+  const [insights,setInsights] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleDataParsed = (data) => {
+  const handleDataParsed = async (data) => {
     const textResponses = data.map((row) => Object.values(row)).flat();
-    setBool(true);
-    console.log(textResponses);
-    console.log(typeof textResponses);
-  };
-  const analyseSentiment = () => {
-      if(bool){
-        console.log('analysing....');
+
+    const sentimentResult = SentimentAnalysis(textResponses);
+    setSentiment(sentimentResult);
+
+    try{
+        const aiInsights = await getInsights(textResponses);
+        setInsights(aiInsights);
+      }catch (error) {
+       console.error("Summarization failed:", error);
       }
-  }
-  
+  };
+
+  const summarize = async function (){
+      setLoading(true);
+    }
+
   return (
     <>
       <div className="header-container">
@@ -31,10 +42,12 @@ function App() {
             Upload CSV Feedback File
             <FileUpload onDataParsed={handleDataParsed}/>
           </label>
-          <button className="summarize-btn" onClick={analyseSentiment}>
+          <button className="summarize-btn" onClick={summarize}>
             Summarize
           </button>
         </div>
+        {loading && <p>Analyzing feedback using HuggingFace...</p>}
+        {/* {loading && insights && <Summary insights={insights} />} */}
       </div>
     </>
   );
