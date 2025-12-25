@@ -3,30 +3,31 @@ import FileUpload from "./components/FileUpload";
 import { SentimentAnalysis } from './components/SentimentAnalysis';
 import { getInsights } from './components/GetInsights';
 import "./styling/App.css";
-// import Summary from './components/Summary';
+import Summary from './components/Summary';
 
 function App() {
 
   const [sentiment,setSentiment] = useState(null);
   const [insights,setInsights] = useState("");
   const [loading, setLoading] = useState(false);
+  const [textResponses,setTextResponses] = useState(null);
 
-  const handleDataParsed = async (data) => {
-    const textResponses = data.map((row) => Object.values(row)).flat();
-
-    const sentimentResult = SentimentAnalysis(textResponses);
+  const handleDataParsed = (data) => {
+    const responses = data.map((row) => Object.values(row)).flat();
+    setTextResponses(responses);
+    const sentimentResult = SentimentAnalysis(responses);
     setSentiment(sentimentResult);
+  };
 
-    try{
+  const summarize = async function (){
+      setLoading(true);
+      try{
         const aiInsights = await getInsights(textResponses);
         setInsights(aiInsights);
       }catch (error) {
        console.error("Summarization failed:", error);
       }
-  };
-
-  const summarize = async function (){
-      setLoading(true);
+      setLoading(false);
     }
 
   return (
@@ -46,9 +47,10 @@ function App() {
             Summarize
           </button>
         </div>
-        {loading && <p>Analyzing feedback using HuggingFace...</p>}
-        {/* {loading && insights && <Summary insights={insights} />} */}
+        {loading && <p className='loading'>Analyzing feedback using <span>HuggingFace</span>...</p>}
+        {insights && sentiment && <Summary insights={insights} sentiment={sentiment}/>}
       </div>
+      
     </>
   );
 }
