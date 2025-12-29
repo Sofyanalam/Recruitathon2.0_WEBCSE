@@ -12,15 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash"
-});
+const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
 app.post("/api/insights", async (req, res) => {
   try {
     const { data } = req.body;
 
-    if (!Array.isArray(data)) {
+    if (!data) {
       return res.status(400).json({ error: "Invalid input" });
     }
 

@@ -1,5 +1,6 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend, } from 'chart.js';
+// import { color } from 'chart.js/helpers';
 
 ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend)
 
@@ -26,7 +27,7 @@ export const BarChart = ({data}) => {
     scales: {
       y: {
         beginAtZero: true,
-        max: maxValue + 3,
+        max: 1.3*maxValue,
       }
     }
   };
@@ -51,6 +52,7 @@ export const BarChart = ({data}) => {
           "rgba(50, 0, 150, 1)",
         ],
         borderWidth :1,
+        borderRadius: 10
       },
     ],
   };
