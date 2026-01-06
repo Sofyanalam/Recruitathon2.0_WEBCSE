@@ -1,16 +1,79 @@
-# React + Vite
+MiraScope is an AI-powered feedback summarization web application that helps you analyze CSV-based user feedback. It automatically extracts sentiment, identifies top themes using TF-IDF, and generates AI-driven insights using Google Gemini. The results are visualized with charts and can be exported as a PDF.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FEATURES
+* Upload CSV file containing user feedback.
+* Parsing using Papaparse instead of simply using .split(',').
+* Sentiment analysis using VADER.
+* Themes extraction using TF-IDF(natural).
+* AI-generated summary,suggestion and quotes using Google Gemini-2.5-flash.
+* Bar Chart & Pie Chart visualisation using chart.js
+* Dark mode support.
+* Export summary as PDF report.
 
-Currently, two official plugins are available:
+TECH-STACK
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- FRONTED
+* React(Vite)
+* chart.js
+* Papaparse
+* html2canvas & jsPDF
+* VADER Sentiment
 
-## React Compiler
+-BACKEND
+* Express.js
+* TF-IDF(Natural)
+* CORS & dotenv
+* Google Gemini API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+PROJECT STRUCTURE
 
-## Expanding the ESLint configuration
+/frontend
+├─ components/
+│ ├─ FileUpload.jsx
+│ ├─ Summary.jsx
+│ ├─ Bar.jsx
+│ ├─ Pie.jsx
+│ ├─ SentimentAnalysis.js
+│ ├─ ExtractThemes.js
+│ └─ GetInsights.js
+├─ styling/
+│ └─ App.css
+|- main.jsx
+└─ App.jsx
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+/backend
+├─ themes.js
+└─ server.js
+
+APPLICATION FLOW
+
+1. Upload CSV File containing headers.
+2. This CSV file is parsed using PAPAPARSE.
+3. This parsed data with rating goes to VADER for sentiment analysis.
+4. And parsed data without ratings goes to TF-IDF for extracting top themes.
+5. Now these top is passed through GEMINI API for AI summary,representative quotes and suggested actions.
+6. Sentiment data sent to form Bar Chart showing scores.
+7. TopThemes data sent to form Pie Chart showing tfidf values for each themes.
+8. All these are presented on a page with AI summary and Bar and Pie chart.
+9. This Analysis can be exported as PDF report.
+
+
+BAR-CHART
+- shows sentiment distribution (very negative -> very positive).
+
+PIE-CHART
+- shows TF-IDF weights of top 5 themes.
+
+DARK MODE 
+- Toggle dark mode from the Summary view.It applies styles dynamically without reloading the page.
+
+ABOUT BUTTON
+- click on this to know about this.
+
+EXPORT PDF
+- Click Download PDF to export the entire summary, charts, and themes into a multi-page PDF.
+
+FUTURE IMPROVEMENTS
+- working on history section which shows previosly summarised CSV file. And also shows the corresponding tabular form of CSV file.Both can be downloaded again.
+- sign-up feature to save summarising history of different users.
+- Better Theme Clusttering using K-MEANS.

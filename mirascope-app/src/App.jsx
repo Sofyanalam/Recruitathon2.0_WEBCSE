@@ -105,7 +105,7 @@ function App() {
         </div>
         {loading && (
           <p className="loading">
-            Analyzing feedback using <span>HuggingFace</span>...
+            Analyzing feedback using <span>Google Gemini</span>...
           </p>
         )}
         { insights && sentiment && topThemesVals && <Summary info={insights} sentiment={sentiment} pieData={topThemesVals}/>}
