@@ -14,7 +14,7 @@ export const PieChart =({data}) =>{
       },
       title: {
         display :true,
-        text : " This is the data representing polarity scores."
+        text : " This is the data representing TF-IDF scores of themes."
       }
     },
     animation: {
@@ -23,23 +23,23 @@ export const PieChart =({data}) =>{
     }
   };
   const pieChartData = {
-    labels : Object.keys(data),
+    labels : data.map(val => val["label"]),
     datasets : [
       {
         label : "scores",
-        data : Object.values(data),
+        data : data.map(val => val["value"]),
         backgroundColor:[
-          "rgba(219, 1, 1, 0.85)",
-          "rgba(0, 138, 231, 1)",
-          "rgba(237, 170, 0, 0.78)",
-          "rgba(4, 242, 242, 0.74)",
-          "rgba(73, 0, 220, 0.88)",
+          "rgba(219, 12, 1, 0.85)",
+          "rgba(0, 169, 231, 1)",
+          "rgba(228, 184, 73, 0.78)",
+          "rgba(226, 101, 178, 0.74)",
+          "rgba(106, 45, 227, 0.88)",
         ],
         borderColor:[
-          "rgba(105, 0, 23, 1)",
+          "rgba(100, 5, 26, 1)",
           "rgba(1, 38, 159, 1)",
           "rgba(143, 103, 0, 1)",
-          "rgba(0, 126, 126, 1)",
+          "rgba(74, 0, 76, 1)",
           "rgba(50, 0, 150, 1)",
         ],
         borderWidth : 0.7,

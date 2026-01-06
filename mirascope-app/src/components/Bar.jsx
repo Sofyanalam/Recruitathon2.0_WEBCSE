@@ -22,7 +22,7 @@ export const BarChart = ({data}) => {
     animation: {
       duration: 2000,
       easing: "easeInOutBack",
-      delay: (ctx) => ctx.dataIndex * 150
+      delay: (context) => context.dataIndex * 200
     },
     scales: {
       y: {
@@ -35,7 +35,7 @@ export const BarChart = ({data}) => {
     labels : Object.keys(data),
     datasets : [
       {
-        label : "scores",
+        label : "Polarity Scores",
         data : Object.values(data),
         backgroundColor:[
           "rgba(219, 1, 1, 0.85)",

@@ -1,40 +1,45 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
+import themesRouter from "./themes.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
+app.use("/themes", themesRouter);
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
+const port = process.env.PORT || 3000;
+const ai = new GoogleGenAI({"apiKey":process.env.GEMINI_API_KEY});
 
-app.post("/api/insights", async (req, res) => {
+app.post("/insights", async (req, res) => {
   try {
-    const { data } = req.body;
+    const { topThemes } = req.body;
 
-    if (!data) {
+    if (!topThemes) {
       return res.status(400).json({ error: "Invalid input" });
     }
 
     const prompt = `
-Analyze the following feedback:
+Input Data: The following are the top 5 themes extracted from our latest data:
+${topThemes.join("\n")}
 
-${data.join("\n")}
-
-Return:
-1. Top 3 themes
-2. 3 representative quotes
-3. 3 suggested actions
+Required Output:
+1. SUMMARY: Provide a 2-sentence executive summary of these 5 themes.
+2. SUGGESTED ACTIONS: Provide exactly 3 high-impact, actionable recommendations.
+3. REPRESENTATIVE QUOTES: Generate 3 realistic quotes that embody the sentiment of these themes (ensure they sound like real user feedback).
+Formatting: Use clear Markdown headings (###) and bullet points.
 `;
 
-    const result = await model.generateContent(prompt);
-    res.json({ result: result.response.text() });
+    const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+    });
+
+    res.json({ result: response.text });
 
   } catch (err) {
     console.error("Gemini error:", err);
@@ -42,6 +47,6 @@ Return:
   }
 });
 
-app.listen(5000, () => {
-  console.log("Backend running on http://localhost:5000");
+app.listen(port, () => {
+  console.log(`Backend running on http://localhost:${port}`);
 });
